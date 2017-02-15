@@ -1,0 +1,19 @@
+{
+  "name": "music-project",
+  "version": "1.0.0",
+  "description": "a project designed to test my ability to create a web server and API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmiddlehurst/music-project.git"
+  },
+  "author": "Tom Middlehurst",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tmiddlehurst/music-project/issues"
+  },
+  "homepage": "https://github.com/tmiddlehurst/music-project#readme"
+}
