@@ -1,9 +1,33 @@
 var BandSchema = mongoose.Schema({
-  'name': String,
-  'size': Number,
-  'formedIn': String,
-  'genre': [String],
-  'rating': Number,
+  'name': {
+  	type:String,
+  	required: true,
+  	unique: true
+  },
+
+  'size': {
+  	type:Number,
+  	required:true,
+  	min:1
+  },
+
+  'formedIn': {
+  	type:String,
+  	required:true,
+  },
+
+  'genre': {
+  	type:[String]
+  	required:true,
+  },
+
+  'rating': {
+  	type:Number,
+  	required:true
+  },
+  
   'image': String
 
 })
+
+module.exports = mongoose.model('Car', CarSchema);
