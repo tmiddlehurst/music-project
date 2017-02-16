@@ -5,19 +5,19 @@ var BandSchema = mongoose.Schema({
   	unique: true
   },
 
-  'size': {
+  'members': {
   	type:Number,
   	required:true,
   	min:1
   },
 
-  'formedIn': {
-  	type:String,
+  'yearsActive': {
+  	type:[String],
   	required:true,
   },
 
   'genre': {
-  	type:[String]
+  	type:[String],
   	required:true,
   },
 
@@ -25,7 +25,7 @@ var BandSchema = mongoose.Schema({
   	type:Number,
   	required:true
   },
-  
+
   'image': String
 
 })
