@@ -1,22 +1,24 @@
+var Band = require('../models/band.js');
+
 function indexBands(req, res) {
-	Band.find ({} , function(err, cars) {
+	Band.find ({} , function(err, bands) {
 		if(err) return res.status(500).send(err);
 		res.render("bands/index" , {
 			title: "Bands",
 			bands: bands
 		});
-	});
+	});// TESTED
 }
 
 function showBands(req, res) {
-	Band.findById(rew.params.id , function(err, car) {
-		if(!car) return res.status(404).send("Not found");
+	Band.findById(req.params.id , function(err, band) {
+		if(!band) return res.status(404).send("Not found");
 		if(err) return res.status(500).send(err);
 		res.render("bands/show" , {
 			title: "Band",
 			band: band
 		});
-	});
+	}); // TESTED
 }
 
 
@@ -32,10 +34,11 @@ function newBands(req, res) {
 	res.render("bands/new" , {
 		title: "New Band",
 		band: newBand
-	});
+	}); 
 }
 
 function createBands(req, res) {
+	console.log(req.body);
 	Band.create(req.body, function(err, band) {
 		if(err) return res.status(500).send(err);
 		res.redirect("/");
@@ -43,8 +46,8 @@ function createBands(req, res) {
 }
 
 function editBands(req, res) {
-	Band.findById(req.params.id , function (err, car) {
-		if(!car) return res.status(404).send("Not found");
+	Band.findById(req.params.id , function (err, band) {
+		if(!band) return res.status(404).send("Not found");
 		if(err) return res.status(500).send(err);
 		res.render("bands/edit" , {
 			title: "Band",

@@ -20,7 +20,6 @@ describe('Bands', function() {
 	beforeEach(function(done) {
 		band.save(function(err, newBand) {
 			if (err) return console.log(err);
-			/* This might cause an error because .id was changed to .name */
 			console.log("made newBand with id " + newBand.id);
 			band.id = newBand.id;
 			done();
@@ -28,7 +27,6 @@ describe('Bands', function() {
 	})
 
 	afterEach(function(done) {
-		/* again, .id changed to .name */
 		Band.findByIdAndRemove(band.id, function(err) {
 			if (err) return console.log(err);
 			done(); 
@@ -37,16 +35,16 @@ describe('Bands', function() {
 
 	//========================SHOW===================================
 
-  // it('should list a SINGLE car on /<id> GET', function(done) {
-  //   chai.request(app)
-  //     .get('/' + car.id)
-  //     .end(function(err, res){
-  //       res.should.have.status(200);
-  //       res.should.be.html;
-  //       res.text.should.match(/Post 1/);
-  //       done();
-  //     });
-  // });
+	it('should list a SINGLE band on /<id> GET', function(done) {
+	    chai.request(app)
+	      .get('/' + band.id)
+	      .end(function(err, res){
+	        res.should.have.status(200);
+	        res.should.be.html;
+	        res.text.should.match(/Wham!/);
+	        done();
+	    });
+	});
 
 	//===============================================================
 
@@ -59,9 +57,9 @@ describe('Bands', function() {
 			.end(function(err, res){
 				res.should.have.status(200);
 				res.should.be.html;
-				res.text.should.match("All bands");
-				res.text.should.match("Wham!");
-				console.log("done ok?!")
+				res.text.should.match(/All bands/);
+				res.text.should.match(/Wham!/);
+				console.log("done ok?!");
 				done();
 			});
 	});

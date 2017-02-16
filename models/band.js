@@ -1,24 +1,26 @@
 var mongoose = require('mongoose');
+
+
 var BandSchema = mongoose.Schema ({
 
 	name: {
-		type:String,
+		type: String,
 		required: true,
 		unique: true
 	},
 
 	yearsActive: {
 		type:[String],
-		required:true,
+		required: true,
 	},
 
 	genre: {
 		type:[String],
-		required:true,
+		required: true,
 	},
 	members: {
-		type:Number,
-		required:true,
+		type: Number,
+		required: true,
 		min:1
 	},
 
@@ -29,6 +31,6 @@ var BandSchema = mongoose.Schema ({
 
 	image: String
 
-})
+});
 
 module.exports = mongoose.model('Band', BandSchema);

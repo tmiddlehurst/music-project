@@ -1,0 +1,10 @@
+<h1>All bands</h1>
+
+<% for(var i = 0; i < bands.length; i++ ) { %>
+	<div>
+		<h3><a href="/<%= bands[i].id %>"><%= bands[i].name %></a></h3>
+		<p><%= bands[i].genre %></p>
+		<p><%= bands[i].image %></p>
+		<p><%= bands[i].rating %></p>
+	</div>
+<% } %>
