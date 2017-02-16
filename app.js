@@ -15,3 +15,5 @@ mongoose.connect('mongodb://localhost/', function() {
 app.listen(port, function() {
 	console.log("The server is on and listening on port " + port);
 });
+
+module.exports = app;
