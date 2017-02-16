@@ -1,33 +1,39 @@
-var BandSchema = mongoose.Schema({
-  'name': {
-  	type:String,
-  	required: true,
-  	unique: true
-  },
+var mongoose = require('mongoose');
+var BandSchema = mongoose.Schema ({
+	id: {
+		type: Number,
+		required:true,
+		unique: true
+	},
 
-  'members': {
-  	type:Number,
-  	required:true,
-  	min:1
-  },
+	name: {
+		type:String,
+		required: true,
+		unique: true
+	},
 
-  'yearsActive': {
-  	type:[String],
-  	required:true,
-  },
+	yearsActive: {
+		type:[String],
+		required:true,
+	},
 
-  'genre': {
-  	type:[String],
-  	required:true,
-  },
+	genre: {
+		type:[String],
+		required:true,
+	},
+	members: {
+		type:Number,
+		required:true,
+		min:1
+	},
 
-  'rating': {
-  	type:Number,
-  	required:true
-  },
+	rating: {
+		type:Number,
+		required:true
+	},
 
-  'image': String
+	image: String
 
 })
 
-module.exports = mongoose.model('Car', CarSchema);
+module.exports = mongoose.model('Band', BandSchema);

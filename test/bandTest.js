@@ -9,6 +9,7 @@ chai.use(chaiHttp);
 
 describe('Bands', function() {
 	var band = new Band({
+		id: 123,
 		name: 'Wham!',
 		yearsActive: ['1981-1986', '1988', '1991'],
 		genre: ['Dance-pop', 'Post-disco'],
@@ -21,30 +22,17 @@ describe('Bands', function() {
 	band.save(function(err, newBand) {
 		if (err) return console.log(err);
 		/* This might cause an error because .id was changed to .name */
-		console.log("made newBand with name " + newBand.name);
-		car.band = newBand.name;
+		console.log("made newBand with id " + newBand.id);
+		band.id = newBand.id;
 	})
 	})
 
 	afterEach(function() {
 		/* again, .id changed to .name */
-		Band.findByIdAndRemove(band.name, function(err) {
+		Band.findByIdAndRemove(band.id, function(err) {
 			if (err) return console.log(err);
 		})
 	})
-
-	it('should list ALL bands on / GET', function(done) {
-		var request = chai.request(app);
-		request
-			.get('/')
-			.end(function(err, res){
-				res.should.have.status(200);
-				res.should.be.html;
-				res.text.should.match("All bands");
-				res.text.should.match("Wham!");
-				done();
-			});
-	});
 
 	//========================SHOW===================================
 
@@ -58,6 +46,23 @@ describe('Bands', function() {
   //       done();
   //     });
   // });
+
+	//===============================================================
+
+	//=======================INDEX===================================
+
+	it('should list ALL bands on / GET', function(done) {
+		var request = chai.request(app);
+		request
+			.get('/')
+			.end(function(err, res){
+				res.should.have.status(200);
+				res.should.be.html;
+				res.text.should.match("All bands");
+				res.text.should.match("Wham!");
+				done();
+			});
+	});
 
 	//===============================================================
 
