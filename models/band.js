@@ -1,10 +1,5 @@
 var mongoose = require('mongoose');
 var BandSchema = mongoose.Schema ({
-	id: {
-		type: Number,
-		required:true,
-		unique: true
-	},
 
 	name: {
 		type:String,

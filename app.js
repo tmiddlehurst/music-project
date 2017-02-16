@@ -8,7 +8,7 @@ var router = require('./config/routes');
  	
 app.use(router);
 
-mongoose.connect('mongodb://localhost/', function() {
+mongoose.connect('mongodb://localhost/bands', function() {
 	console.log('database connected.')
 });
  	

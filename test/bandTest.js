@@ -9,7 +9,6 @@ chai.use(chaiHttp);
 
 describe('Bands', function() {
 	var band = new Band({
-		id: 123,
 		name: 'Wham!',
 		yearsActive: ['1981-1986', '1988', '1991'],
 		genre: ['Dance-pop', 'Post-disco'],
@@ -18,19 +17,21 @@ describe('Bands', function() {
 		image: 'https://upload.wikimedia.org/wikipedia/en/7/7b/Whammake2.jpg'
 	});
 
-	beforeEach(function() {
-	band.save(function(err, newBand) {
-		if (err) return console.log(err);
-		/* This might cause an error because .id was changed to .name */
-		console.log("made newBand with id " + newBand.id);
-		band.id = newBand.id;
-	})
+	beforeEach(function(done) {
+		band.save(function(err, newBand) {
+			if (err) return console.log(err);
+			/* This might cause an error because .id was changed to .name */
+			console.log("made newBand with id " + newBand.id);
+			band.id = newBand.id;
+			done();
+		})
 	})
 
-	afterEach(function() {
+	afterEach(function(done) {
 		/* again, .id changed to .name */
 		Band.findByIdAndRemove(band.id, function(err) {
 			if (err) return console.log(err);
+			done(); 
 		})
 	})
 
@@ -60,6 +61,7 @@ describe('Bands', function() {
 				res.should.be.html;
 				res.text.should.match("All bands");
 				res.text.should.match("Wham!");
+				console.log("done ok?!")
 				done();
 			});
 	});
