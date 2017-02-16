@@ -28,87 +28,49 @@ function newBands(req, res) {
 		members: 0,
 		rating: 0,
 		image: ""
-	}
+	};
+	res.render("bands/new" , {
+		title: "New Band",
+		band: newBand
+	});
 }
 
 function createBands(req, res) {
-	res.send('create');
+	Band.create(req.body, function(err, band) {
+		if(err) return res.status(500).send(err);
+		res.redirect("/");
+	});
 }
 
 function editBands(req, res) {
-	res.send('edit');
+	Band.findById(req.params.id , function (err, car) {
+		if(!car) return res.status(404).send("Not found");
+		if(err) return res.status(500).send(err);
+		res.render("bands/edit" , {
+			title: "Band",
+			band: band
+		});
+	});
 }
 
 function updateBands(req, res) {
-	res.send('update');
+	Band.findByIdAndUpdate (
+		req.params.id,
+		{ $set: req.body }, 
+		{ runValidators: true},
+		function (err , band) {
+			if (err) return res.status(500).send(err);
+			res.redirect("/");
+		}
+	);
 }
 
 function deleteBands(req, res) {
-	res.send('delete');
+	Band.findByIdAndRemove(req.params.id , function(err) {
+    	res.redirect("/");
+  	});
 }
 
-/* function indexCars(req, res) {
-  Car.find({} , function(err, cars) {
-    if(err) return res.status(500).send(err);
-    res.render("cars/index" , {
-      title: "Cars",
-      cars: cars
-    });
-  });
-}
-
-
-  res.render("cars/new" , {
-    title: "New Car",
-    car: newCar
-  });
-}
-
-function createCars(req, res) {
-  Car.create(req.body, function(err, car){
-    if(err) return res.status(500).send(err);
-    res.redirect("/");
-  });
-}
-
-function editCars(req, res) {
-  Car.findById(req.params.id , function(err, car) {
-    if(!car) return res.status(404).send("Not found");
-    if(err) return res.status(500).send(err);
-    res.render("cars/edit" , {
-      title: "Car",
-      car: car
-    });
-  });
-}
-
-function updateCars(req, res) {
-  Car.findByIdAndUpdate(
-    req.params.id,
-    { $set:  req.body },
-    { runValidators: true },
-    function(err , car){
-      if(err) return res.status(500).send(err);
-      res.redirect("/");
-    }
-  );
-}
-
-function deleteCars(req , res) {
-  Car.findByIdAndRemove(req.params.id , function(err) {
-    res.redirect("/");
-  });
-}
-
-module.exports = {
-	index: indexCars,
-	show: showCars,
-	new: newCars,
-	create: createCars,
-	edit: editCars,
-	update: updateCars,
-	delete: deleteCars
-} */
 
 module.exports = {
 	index: indexBands,
