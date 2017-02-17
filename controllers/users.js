@@ -10,13 +10,12 @@ function showUser(req, res) {
 		});
 	}); 
 }
-									// TESTED
-
 
 function newUser(req, res) {
 	var newUser = {
 		username: "",
 		email: "",
+		password: "",
 		profileImage: ""
 	};
 	res.render("users/new" , {

@@ -67,7 +67,6 @@ describe('Bands', function() {
 	//========================CREATE=================================
 
 	it('should add a SINGLE band on / POST' , function(done){
-		console.log(band.id);
 		var request = chai.request(app);
 		request.post('/')
 		  .set('content-type', 'application/x-www-form-urlencoded')

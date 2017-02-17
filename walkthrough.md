@@ -1,439 +1,470 @@
-# Node Walkthrough
+#Authentication walkthrough
 
-A step-by-step guide to building a simple node and express application from scratch. 
+## Cookies and Sessions
 
-## Step 1: Setup, Express, Listening and Requesting
+Let's add support for cookies to our app:
 
- - Create a new project directory on the command line and when inside it, create your `package.json` with the following command. 
-	
-	```bash
-	npm init
-	``` 
-	This acts as a manifest that lists all the npm modules that are needed to 	run the project as well as more information about testing and running the 	project that we will cover later in the course.
-
- - Create an `app.js` file in the repository to act as the starting point for the app.
- - In the command line, type `npm install express --save` to include the express package in your project. the `--save` adds the package to `package.json`, so there is a canonical list of all the packages used in the project in that file, under dependencies.
- - At the top of the `app.js`, write the following two lines: 
-
- 	```js
- 	var express = require("express");
- 	var app = express();
- 	```
- 	The first line requires the express package, and the second creates a server app for the project. This app, from this file, is what is run when the server is live.
- 
- - Still in `app.js`, add the following: 
-
- 	```js
- 	var port = process.env.PORT || 3000;
- 	
- 	app.listen(port, function() {
- 		console.log("The server is on and listening on port " + port);
- 	})
- 	```
- 	Here, we have set which port the app should run on. We're saying to use a predefined one for deployment if it exists. If it doesn't exist, our app will run on `localhost:3000`. We must use the `app.listen()` to run the server.
- 
- - To test a request, add the following to the `app.js` above the `app.listen()`: 
-
- 	```js
- 	app.get('/', function(req, res) {
- 		res.send('Request working.')
- 	})
- 	```
- 	
- 	At this point, we can run `node app.js` in ther terminal to run the server.
- 	Go to `localhost:3000` in the browser and you should see "Request working."
- 	
-## Step 2: Router
-Now we have one request working, lets set up a router to handle all the requests we'll need from the app. 
-
- - Create new directories for `config` and `controllers` and create the files `config/routes.js` and `controllers/cars.js`.
- - At the top of `routes.js`, add the following: 
-
- 	```js
- 	var express = require("express");
- 	var router = express.Router();
- 	var carsController = require('../controllers/cars');
- 	
- 	module.exports = router;
- 	```
-	Here we are instantiating a new express router. This is a self contained module that handles the routing for our app - nifty. We are also exporting this module for use in our `app.js` file, and ensuring our newly created controller is required and accessible in this file.
-	
- - Above the `module.exports`, add the following for all of our seven RESTful routes: 
-
- 	```js
-	router.route('/')
-	  .get(carsController.index)
-	  .post(carsController.create);
-	
-	router.get('/new', carsController.new);
-	
-	router.route('/:id')
-	  .get(carsController.show)
-	  .put(carsController.update)
-	  .delete(carsController.delete);
-	
-	router.get('/:id/edit', carsController.edit);
- 	```
- 	Here we have used router methods to define which controller function to run when the relevant endpoint is hit. Using the correct RESTful HTTP verb and path combinations we can perform all the necessary CRUD functions for a useful web app.
- 
- - In the `app.js` add the following lines to replace the temporary `app.get()` method:
-
- 	```js
- 	var router = require('./config/routes');
- 	
- 	app.use(router);
- 	```
- 	
- 	This means the routes will be included in the app, and if any of the routes are requested the router will handle which function to run.
- 	
- - The next step is to create the controller functions that these routes link up to. Inside the `controllers/cars.js` file, write the following:
-
- 	```js
- 	function indexCars(req, res) {
- 		res.send('index');
- 	}
- 	
- 	function showCars(req, res) {
- 		res.send('show');
- 	}
- 	
- 	function newCars(req, res) {
- 		res.send('new');
- 	}
- 	
- 	function createCars(req, res) {
- 		res.send('create');
- 	}
- 	
- 	function editCars(req, res) {
- 		res.send('edit');
- 	}
- 	
- 	function updateCars(req, res) {
- 		res.send('update');
- 	}
- 	
- 	function deleteCars(req, res) {
- 		res.send('delete');
- 	}
- 	
- 	module.exports = {
- 		index: indexCars,
- 		show: showCars,
- 		new: newCars,
- 		create: createCars,
- 		edit: editCars,
- 		update: updateCars,
- 		delete: deleteCars
- 	}
- 	```
-	These are the 7 RESTful routes which will not change no matter what 	resource or what app we are building. Our app will always fit this 	pattern.
-	
-	These can now be tested using Postman or a similar REST client by requesting each route with the correct HTTP verb and url from the routes.
-	
-## Step 3: The Model
-We'll be using a MongoDB database to store our data in BSON collections for each resource. To interact with the database easily from within out code, we'll be using the mongoose ORM. This gives us a huge range of very helpful methods to use. 
-
-- First we need to tell the app to connect to our MongoDB database, locally for the moment. Install the `mongoose` package into the project, requrire it in your `app.js` and add the following line of code directly below your requirements to connect the app to the database:
-
-```
-mongoose.connect('mongodb://localhost/autotrader', function() {
-	console.log('database connected.')
-})
+```bash
+npm install cookie-parser --save
 ```
 
-- Create a directory called `models` and add a file named `car.js`.
+Cookies are sent along with ever request by the browser. With the body data we needed the body-parser package to collect the data and put it in the req object for us. Now we need the cookie-parser to do the same with cookies.
 
-- Inside this file we need to create a Schema for the app to use to store the correct data into the database. Firstly require `mongoose` at the top of the page, then write the following to create the schema: 
+Open app.js and add the following:
 
+```javascript
+var cookieParser = require('cookie-parser');
+
+// add support for cookies
+app.use(cookieParser());
 ```
-var CarSchema = mongoose.Schema({
-  color: String,
-  make: String,
-  model: String,
-  bhp: Number,
-  year: Number,
-  miles: Number
-})
-```
+Let's get sessions set up:
 
-- To make this available as a model for the rest of the app, export it and use the model method as follows: 
-
-```
-module.exports = mongoose.model('Car', CarSchema);
+```bash
+npm install express-session --save
 ```
 
-- We now have a model to use in our controllers and, more importantly, in our tests, but it doesn't have validations attached. Add relevant validations to your data - make good use of required, unique, min, max etc and write your own for specfic cases.
-	
-## Step 4: Testing 
+Add the configuration script to the app.js ***after*** your cookie middleware:
 
-We will be using TDD for the remainder of this project to en
-sure all the routes of the application work as desired. For now, lets write up some tests for the 7 RESTful car routes.
+```javascript
+var session = require('express-session');
 
-- Make a new directory called `test` and add a new file called `carsTest.js`.
+...
 
-- Install mocha and chai for testing with the following commands: 
+app.use(session({
+  resave: false,
+  saveUninitialized: true,
+  secret: 'spartasupersecretkey'
+}));
+```
 
-	```
-	npm i mocha -g
-	npm i chai chai-http --save-dev
-	```
-	Mocha needs to be installed globally as it is a command line tool. Chai and chai-http are used for writing the actual code in the project, and therefore need to be on the package.json as dev dependencies.
-	
-- Write a test file similar to the following. Notice the use of beforeEach and afterEach methods to create and delete a car - this means we always have a car accessible with an id we know for testing. We are also deleting unnecessary cars after the POST test. 
+And that's it. We now have a req.session object to work with. The extra options we passed aren't really important to us right now but here's what they are:
 
-- Write the line `module.exports = app;` at the bottom of your `app.js` to allow the app to be accessible in the test suite.
+* resave - should all sessions be saved to the database even if nothing was changed
+* saveUnitiliazed - should new sessions be saved even if they're empty
+* secret - the key to use for encrypting our session data. Like a password
 
-- For more info on mocha and chai, and to use any methods or assertions not listed here, see the docs. To run the file for testing, type `mocha tests/carsTest.js` on the command line.
+If you refresh your page you'll see the log in the terminal but you'll also see that we have a new cookie in the browser called ``connect.sid``. This is how the browser tells the server which session belongs to it. 
 
-	```
-	var chai = require('chai');
-	var chaiHttp = require('chai-http');
-	var app = require('../app');
-	var should = chai.should();
-	var expect = require('chai').expect;
-	var Car = require('../models/car');
-	
-	chai.use(chaiHttp);
-	
-	describe('Cars', function() {
-	  var car = new Car({
-	    color: "red",
-	    make: "ford",
-	    model: "fiesta",
-	    bhp: 100,
-	    year: 2008,
-	    miles: 60000
-	  });
-	
-	  beforeEach(function() {
-	    car.save(function(err, newCar) {
-	      if (err) return console.log(err);
-	      console.log("made newCar with id " + newCar.id);
-	      car.id = newCar.id;
-	    })
-	  })
-	
-	  afterEach(function() {
-	    Car.findByIdAndRemove(car.id, function(err) {
-	      if (err) return console.log(err);
-	    })
-	  })
-	
-	  it('should list ALL cars on / GET', function(done) {
-	    var request = chai.request(app);
-	    request
-	      .get('/')
-	      .end(function(err, res){
-	        res.should.have.status(200);
-	        res.should.be.html;
-	        res.text.should.match("All cars");
-	        res.text.should.match("ford fiesta");
-	        done();
-	      });
-	  });
-	
-	  it('should list a SINGLE car on /<id> GET', function(done) {
-	    chai.request(app)
-	      .get('/' + car.id)
-	      .end(function(err, res){
-	        res.should.have.status(200);
-	        res.should.be.html;
-	        res.text.should.match(/Post 1/);
-	        done();
-	      });
-	  });
-	
-	  it('should add a SINGLE car on / POST' , function(done){
-	    var request = chai.request(app);
-	    request.post('/')
-	      .set('content-type', 'application/x-www-form-urlencoded')
-	      .send({
-	        _id: 123,
-	        color: "green",
-	        make: "nissan",
-	        model: "micra",
-	        bhp: 90,
-	        year: 2011,
-	        miles: 40000
-	      })
-	      .end(function(err, res){
-	        res.should.have.status(200);
-	        res.should.be.html;
-	        res.text.should.match(/All cars/);
-	        request
-	          .get('/123')
-	          .end(function(err, res){
-	            res.should.have.status(200);
-	            res.should.be.html;
-	            res.text.should.match(/green/);
-	            res.text.should.match(/micra/);
-	
-	            Car.findByIdAndRemove(123, function(err) {
-	              if (err) return console.log(err);
-	              done();
-	            });
-	          });
-	      });
-	  });
-	
-	  // describe a test for PUT
-	  it('should update a SINGLE car on /<id> PUT' , function(done){
-	    var request = chai.request(app);
-	    request.put('/' + car.id)
-	      .set('content-type', 'application/x-www-form-urlencoded')
-	      .send({'color': 'blue', 'miles': 70000})
-	      .end(function(err, res){
-	        res.should.have.status(200);
-	        res.should.be.html;
-	        res.text.should.match(/All cars/);
-	        request
-	          .get('/' + car.id)
-	          .end(function(err, res){
-	            res.should.have.status(200);
-	            res.should.be.html;
-	            res.text.should.match(/blue/);
-	            res.text.should.match(/miles/);
-	            done();
-	          });
-	      });
-	  });
-	
-	
-	  it('should delete a SINGLE car on /<id> DELETE' , function(done) {
-	    var request = chai.request(app);
-	    request.delete('/' + car.id)
-	      .end(function(err, res){
-	        res.should.have.status(200);
-	        res.should.be.html;
-	        res.text.should.match(/All cars/);
-	        request
-	          .get('/' + car.id)
-	          .end(function(err, res){
-	            res.should.have.status(404);
-	            done();
-	          });
-	      });
-	  });
-	});
+You can store pretty much any json object ( minus the methods ) in the session. It doesn't just have to be simple numbers. So sessions are great for storing information about the logged in user.
 
-	```
-	
-- Before continuing, ensure when the tests run they are all being run and giving chai errors rather than javascript errors.
+## Flash messages
 
-## Step 5: The Controller
+Let's install a package called connect-flash to help us:
 
-We now need to populate our controller functions with the correct mongoose database methods so they make the correct requests. Your final controller should look similar to the one below. We have covered this a lot - if you are sill worried about these let me know!
+```bash
+npm install connect-flash --save
+```
+
+Because this package uses both cookies and session the setup ***must*** come last.
+
+```javascript
+var flash = require('connect-flash');
+
+...
+
+app.use(flash());
+```
+
+Now that that's setup we have a flash() method available on req. This will push messages on to a stack that we can retrieve and display later.
+
+Let's replace all our error checking in our controller with flash messages for the CREATE route:
+
+```javascript
+// ask mongoose to save the data for us and wait for the response
+  Post.create( req.body , function(err, post){
+  
+    // check for errors and store a flash message if there was a problem
+    if(err) req.flash('error' , err.message);
+  
+    // redirect the user to a GET route. We'll go back to the INDEX.
+   res.redirect("/");
+  
+});
 
 ```
-	var Car = require('../models/car');
 
-function indexCars(req, res) {
-  Car.find({} , function(err, cars) {
-    if(err) return res.status(500).send(err);
-    res.render("cars/index" , {
-      title: "Cars",
-      cars: cars
-    });
-  });
-}
+We'll also need to display our messages somewhere. It would be nice to be able to see the messages no matter which page you end up on. So lets create a new partial and put it in the layout:
 
-function showCars(req, res) {
-  Car.findById(req.params.id , function(err, car) {
-    if(!car) return res.status(404).send("Not found");
-    if(err) return res.status(500).send(err);
-    res.render("cars/show" , {
-      title: "Car",
-      car: car
-    });
-  });
-}
+```bash
+touch views/partials/messages.ejs
+```
 
-function newCars(req , res) {
-  var newCar = {
-    color: "",
-    make: "",
-    model: "",
-    bhp: 0,
-    year: 0,
-    miles: 0
+Add the following to messages.ejs to display the errors:
+
+```html
+<div id="messages">
+    <%= errors %>
+</div>
+```
+
+And include the partial in the layout.ejs:
+
+```html
+<body>
+  
+   <% include partials/navigation  %>
+   <% include partials/messages %>
+   
+...   
+```
+
+Now we'll need that "errors" variable in every template. Rather than do this in every controller ( which would be a pain ) we can set a variable that is available in every template using some middleware and res.locals. 
+
+Add the following to your app.js ***after*** the flash middleware:
+
+```javascript
+// middleware to make flash messages available in every template
+app.use(function(req, res, next){
+    // res.locals will be available in every template
+    res.locals.errors = req.flash('error');
+    console.log(res.locals.errors);
+    next();
+});
+```
+
+## Authentication
+
+### Model
+
+In the command line:
+
+```bash
+touch models/user.js
+```
+
+Add the following to user.js:
+
+```javascsript
+var mongoose = require('mongoose');
+
+var UserSchema = new mongoose.Schema({
+
+  first_name : {type: String, required:true},
+  last_name : {type: String, required:true},
+  email : {type: String, required:true},
+  password : {type: String, required:true}
+
+});
+
+module.exports = mongoose.model('User' , UserSchema);
+```
+
+### Views
+
+The form view is actually a bit simpler for registration.
+
+In the terminal:
+
+```bash
+mkdir views/users
+touch views/users/new.ejs
+touch views/users/form.ejs
+```
+
+In new.ejs:
+
+```html
+<h1>Register</h1>
+<% include form %>
+```
+
+In the form.ejs:
+
+```html
+<form action="/users" method="POST">
+	<div>
+		<label>First Name</label>
+		<input type="text" name="first_name">
+	</div>
+	<div>
+		<label>Last Name</label>
+		<input type="text" name="last_name">
+	</div>
+	<div>
+		<label>Email</label>
+		<input type="text" name="email">
+	</div>
+	<div>
+		<label>Password</label>
+		<input type="password" name="password">
+	</div>
+	
+	<input type="submit" value="Register">
+</form>
+``` 
+
+### Controller
+
+In the terminal:
+
+```bash
+touch controllers/users.js
+```
+
+In the users.js controller:
+
+```javascript
+// NEW - GET /new
+function newUser(req , res) {
+
+  // create an empty user
+  var newUser = {
+    id: "",
+    title: "",
+    body: ""
   }
 
-  res.render("cars/new" , {
-    title: "New Car",
-    car: newCar
+  res.render("posts/new" , {
+    title: "Register",
+    user: newUser
   });
 }
 
-function createCars(req, res) {
-  Car.create(req.body, function(err, car){
-    if(err) return res.status(500).send(err);
-    res.redirect("/");
+// CREATE - POST /
+function createUser(req , res) {
+
+  // data is gathered by body parser and placed in req.body
+
+  // ask mongoose to save the data for us and wait for the response
+  User.create( req.body , function(err, post){
+  
+    // check for errors and return 500 if there was a problem
+    if(err) req.flash('error' , err.message);
+  
+    // redirect the user to a GET route. We'll go back to the INDEX.
+   res.redirect("/");
+  
   });
 }
 
-function editCars(req, res) {
-  Car.findById(req.params.id , function(err, car) {
-    if(!car) return res.status(404).send("Not found");
-    if(err) return res.status(500).send(err);
-    res.render("cars/edit" , {
-      title: "Car",
-      car: car
-    });
-  });
+// export all our controller functions in an object
+module.exports = {
+
+  new: newUser,
+  create: createUser
+
+}
+```
+
+### Routes
+
+We only need two of our seven RESTful routes for this. NEW and CREATE. Let's add them to the config.js. Make sure you add these routes ***before*** your posts routes as they are more specific and so could be overriden by the more general routes for posts. We want them checked first:
+
+
+```javascript
+var usersController = require('../controllers/users');
+
+...
+
+// users
+router.route('/users')
+      .post(usersController.create);
+
+router.route('/users/new')
+      .get(usersController.new);
+```
+
+### Sessions
+
+We need a login form. The login form is basically just a NEW form as it's used to create a session. It needs an email field and a password field:
+
+```bash
+mkdir views/sessions
+touch views/sessions/new.ejs
+touch views/sessions/form.ejs
+```
+In the new.ejs
+
+```html
+<h1>Login</h1>
+
+<% include form.ejs %>
+```
+
+And in the form.ejs
+
+```html
+<form action="/sessions" method="POST">
+
+  <div>
+    <label>Email</label>
+    <input type="email" name="email">
+  </div>
+
+  <div>
+    <label>Password</label>
+    <input type="password" name="password">
+  </div>
+
+  <input type="submit" value="login">
+
+</form>
+```
+
+### Controller
+
+In the terminal:
+
+```bash
+touch controllers/sessions.js
+```
+
+In the sessions.js file:
+
+```javascript
+var User = require('../models/user');
+
+
+// NEW ( AKA Login )
+function newSession(req,res) {
+
+  res.render('sessions/new' , {title:"Login"});
+
 }
 
-function updateCars(req, res) {
-  Car.findByIdAndUpdate(
-    req.params.id,
-    { $set:  req.body },
-    { runValidators: true },
-    function(err , car){
-      if(err) return res.status(500).send(err);
-      res.redirect("/");
-    }
-  );
+// CREATE - Handles logins
+function createSession(req,res){
+
+  // look up the user with the details from the form
+  User.findOne({email: req.body.email} , function(err, user){
+
+      // did we find a user and does the password match
+      if(user && user.password == req.body.password) {
+
+        // save the user to the session ( log them in )
+        req.session.user = user.id;
+
+        res.redirect("/");
+
+      } else {
+
+        // add any other errors too
+        if(err) req.flash('error' , err.message);
+
+        // set the not found error
+        req.flash('error' , "Email or password was incorrect");
+
+        // redirect with error back to the login form
+        res.redirect("/sessions/new");
+
+      } 
+
+
+  });
+
 }
 
-function deleteCars(req , res) {
-  Car.findByIdAndRemove(req.params.id , function(err) {
-    res.redirect("/");
-  });
+// DELETE - handle logouts
+function deleteSession(req,res) {
+
+    // clear the user from the session and redirect
+    delete req.session.user;
+
+    // redirect to login page
+    res.redirect("/sessions/new");
+
 }
 
 module.exports = {
-	index: indexCars,
-	show: showCars,
-	new: newCars,
-	create: createCars,
-	edit: editCars,
-	update: updateCars,
-	delete: deleteCars
+  new: newSession,
+  create: createSession,
+  delete: deleteSession
 }
 ```
 
-	
-## Step 6: The Views
-	
-	Now we need to set up the pages the use will view. For this we will use 	`ejs` and `express-ejs-layouts`. Ejs is embedded javascript, and is an 	easy to use templating engine to serve HTML from an express app. Layouts 	is a module we can use to organise our ejs files most logically.
-	
-- Install the two packages mentioned above, and write the following in your app: 
+### Routes
 
+Now let's add all the routes we need to the routes.js file. Again make sure they come ***before*** your posts routes:
+
+```javascript
+// sessions
+router.route('/sessions')
+      .post(sessionsController.create)
+      .delete(sessionsController.delete);
+
+router.route('/sessions/new')
+      .get(sessionsController.new);
 ```
-var layouts = require('express-ejs-layouts');
 
-express.set('view engine', 'ejs);
-app.use(layouts);
-``` 
+Notice that we've moved the delete function to the "/sessions" path. This is because we only have one session that we can delete. So we don't need an ID to identify one like we do with posts.
 
-- Create a directory called `views`. Ejs will look in here by default for the  view files to serve when given a simple path.
+### Add the user to the req object
 
-- Within views, make a file called `layout.ejs`. This will be the main template that is loaded by layouts for every page that is rendered. Inside add the following: 
+We have our user's ID saved in the session now. We can use that ID to load the user from the database with every request so that we can use it in our controllers. Let's write some middleware to do that.
 
+In the app.js add the following ***after*** your session middleware:
+
+```javascript
+var User = require('./models/user');
+
+...
+
+// load logged in user
+app.use(function(req,res,next) {
+
+  // no user id? just move on
+  if(!req.session.user) {
+  	 res.locals.user = false;
+    next();
+  } else {
+
+    // load the user with the ID in the session
+    User.findById(req.session.user , function(err, user){
+      
+      if(user) {
+        // add the user to the request object
+        req.user = user;
+        // add it to locals so we can use it in all templates
+        res.locals.user = user;
+      } else {
+        // couldn't find it... that's weird. clear the session
+        req.session.user = null;
+      }
+
+      next(err);
+    });
+  }
+});
 ```
-in
-```
-	
-- The body ejs tag is where the rest of the content will be displayed. This page acts exactly like standard html, but javascript can be inserted and run in the <% %> tags.
 
-- Make a directory in views called `cars`. Inside here, create five files: index.ejs, new.ejs, edit.ejs, show.ejs and form.ejs. These are for other html templates we will need. For now, add plain text to these file
+The script checks the session for a user id. If it finds one it loads that user from the database and adds the object to the request object and also globally to the templates with res.locals.
+
+
+### Navigation
+
+Let's change our navigation so we can login, logout and see the currently logged in user. We can use our user object in the template to say hello too.
+
+Open the navigation.ejs and change it to the following:
+
+```html
+<nav>
+  <% if(user) { %>
+    <a href="/">Posts</a>
+    <a href="/new">New Post</a>
+    <form action="/sessions" method="POST">
+      <input type="hidden" name="_method" value="delete">
+      <input type="submit" value="Logout">
+    </form>
+    <p>Welcome, <%= user.first_name %></p>
+  <% } else { %>
+    <a href="/sessions/new">Login</a>
+    <a href="/users/register">Register</a>
+  <% } %>
+</nav>
+```
+
+We are checking for user and changing the navigation based on the logged in state of the user.
+
+### Checking for logins
+
+Checking to see if a user is logged should now be as easy as checking to see if req.user is set.
+
+Add the following to the app.js just before the routes are used:
+
+```javascript
+// check for login on all routes except sessions
+app.use(function(req, res, next) {
+  var urls = ["/sessions/new", "/users/new", "/sessions", "/users"];
+  if(urls.indexOf(req.url) === -1) {
+    if (!req.user) return res.redirect('/sessions/new')

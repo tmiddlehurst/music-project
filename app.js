@@ -7,9 +7,17 @@ var router = require('./config/routes');
 var layouts = require('express-ejs-layouts');
 var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
+
+//sessions
+app.use(session({
+  resave: false,
+  saveUninitialized: true,
+  secret: 'spartasupersecretkey'
+}));
 
 //cookie parser
-app.use(cookieParser())
+app.use(cookieParser());
 
 //body parser
 app.use(bodyParser.urlencoded({ extended: false }));
