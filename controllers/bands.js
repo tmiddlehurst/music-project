@@ -7,9 +7,9 @@ function indexBands(req, res) {
 			title: "Bands",
 			bands: bands
 		});
-	});// TESTED
+	});
 }
-
+									// TESTED
 function showBands(req, res) {
 	Band.findById(req.params.id , function(err, band) {
 		if(!band) return res.status(404).send("Not found");
@@ -18,8 +18,9 @@ function showBands(req, res) {
 			title: "Band",
 			band: band
 		});
-	}); // TESTED
+	}); 
 }
+									// TESTED
 
 
 function newBands(req, res) {
@@ -40,6 +41,7 @@ function createBands(req, res) {
 	Band.create(req.body, function(err, band) {
 		if(err) return res.status(500).send(err);
 		res.redirect("/");
+		console.log(band.id);
 	});
 }
 
@@ -71,6 +73,7 @@ function deleteBands(req, res) {
     	res.redirect("/");
   	});
 }
+									// TESTED
 
 
 module.exports = {

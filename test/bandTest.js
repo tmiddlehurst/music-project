@@ -9,7 +9,7 @@ chai.use(chaiHttp);
 
 describe('Bands', function() {
 	var band = new Band({
-		name: 'Wham!',
+		name: '/Wham!',
 		yearsActive: ['1981-1986', '1988', '1991'],
 		genre: ['Dance-pop', 'Post-disco'],
 		members: 2,
@@ -58,8 +58,6 @@ describe('Bands', function() {
 				res.should.have.status(200);
 				res.should.be.html;
 				res.text.should.match(/All bands/);
-				res.text.should.match(/Wham!/);
-				console.log("done ok?!");
 				done();
 			});
 	});
@@ -69,6 +67,7 @@ describe('Bands', function() {
 	//========================CREATE=================================
 
 	it('should add a SINGLE band on / POST' , function(done){
+		console.log(band.id);
 		var request = chai.request(app);
 		request.post('/')
 		  .set('content-type', 'application/x-www-form-urlencoded')
@@ -81,18 +80,19 @@ describe('Bands', function() {
 			image: 'https://upload.wikimedia.org/wikipedia/en/7/7b/Whammake2.jpg'
 		  })
 		  .end(function(err, res){
+		  	console.log("checkin'");
 		    res.should.have.status(200);
 		    res.should.be.html;
-		    res.text.should.match(/All bands/);
+		    // res.text.should.match(/All bands/);
 		    request
-		      .get('/' + band._id)
+		      .get('/' + band.id)
 		      .end(function(err, res){
 		        res.should.have.status(200);
 		        res.should.be.html;
 		        res.text.should.match(/Dance-pop/);
 		        res.text.should.match(/Post-disco/);
 
-		        Car.findByIdAndRemove(band._id, function(err) {
+		        Band.findByIdAndRemove(band.id, function(err) {
 		          if (err) return console.log(err);
 		          done();
 		        });
@@ -104,47 +104,47 @@ describe('Bands', function() {
 
 	//========================UPDATE=================================
 
-	// // describe a test for PUT
-	// it('should update a SINGLE car on /<id> PUT' , function(done){
-	//   var request = chai.request(app);
-	//   request.put('/' + car.id)
-	//     .set('content-type', 'application/x-www-form-urlencoded')
-	//     .send({'color': 'blue', 'miles': 70000})
-	//     .end(function(err, res){
-	//       res.should.have.status(200);
-	//       res.should.be.html;
-	//       res.text.should.match(/All cars/);
-	//       request
-	//         .get('/' + car.id)
-	//         .end(function(err, res){
-	//           res.should.have.status(200);
-	//           res.should.be.html;
-	//           res.text.should.match(/blue/);
-	//           res.text.should.match(/miles/);
-	//           done();
-	//         });
-	//     });
-	// });
+	// describe a test for PUT
+	it('should update a SINGLE band on /<id> PUT' , function(done){
+	  var request = chai.request(app);
+	  request.put('/' + band.id)
+	    .set('content-type', 'application/x-www-form-urlencoded')
+	    .send({'color': 'blue', 'miles': 70000})
+	    .end(function(err, res){
+	      res.should.have.status(200);
+	      res.should.be.html;
+	      res.text.should.match(/All bands/);
+	      request
+	        .get('/' + band.id)
+	        .end(function(err, res){
+	          res.should.have.status(200);
+	          res.should.be.html;
+	          res.text.should.match(/blue/);
+	          res.text.should.match(/miles/);
+	          done();
+	        });
+	    });
+	});
 
 	//===============================================================
 
 	//========================DELETE=================================
 
-	// it('should delete a SINGLE car on /<id> DELETE' , function(done) {
-	// 	var request = chai.request(app);
-	//     request.delete('/' + car.id)
-	//       .end(function(err, res){
-	//         res.should.have.status(200);
-	//         res.should.be.html;
-	//         res.text.should.match(/All cars/);
-	//         request
-	//           .get('/' + car.id)
-	//           .end(function(err, res){
-	//             res.should.have.status(404);
-	//             done();
-	//           });
-	//       });
- //  	});
+	it('should delete a SINGLE band on /<id> DELETE' , function(done) {
+		var request = chai.request(app);
+	    request.delete('/' + band.id)
+	      .end(function(err, res){
+	        res.should.have.status(200);
+	        res.should.be.html;
+	        res.text.should.match(/All bands/);
+	        request
+	          .get('/' + band.id)
+	          .end(function(err, res){
+	            res.should.have.status(404);
+	            done();
+	          });
+	      });
+  	});
 	//===============================================================  
 });
 
