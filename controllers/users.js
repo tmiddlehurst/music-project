@@ -1,33 +1,43 @@
 var User = require ('../models/user.js')
 
-function showUser(req, res) {
-	Band.findById(req.params.id , function(err, user) {
-		if(!user) return res.status(404).send("Not found");
-		if(err) return res.status(500).send(err);
-		res.render("users/show" , {
-			title: "User",
-			user: user
-		});
-	}); 
-}
+// // SHOW USER
+// function showUser(req, res) {
+// 	Band.findById(req.params.id , function(err, user) {
+// 		if(!user) return res.status(404).send("Not found");
+// 		if(err) return res.status(500).send(err);
+// 		res.render("users/show" , {
+// 			title: "User",
+// 			user: user
+// 		});
+// 	}); 
+// }
 
+// NEW - GET
 function newUser(req, res) {
+	//create and empty user
 	var newUser = {
+		id: "",
 		username: "",
 		email: "",
 		password: "",
 		profileImage: ""
 	};
 	res.render("users/new" , {
-		title: "New User",
+		title: "Register",
 		user: newUser
 	}); 
 }
 
+//CREATE - POST
 function createUser(req, res) {
-	console.log(req.body);
-	Band.create(req.body, function(err, band) {
+
+	User.create(req.body, function(err, user) {
 		if(err) return res.status(500).send(err);
 		res.redirect("/");
 	});
+}
+
+module.exports = {
+	new: newUser,
+	create: createUser
 }

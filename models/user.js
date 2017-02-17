@@ -15,9 +15,10 @@ var UserSchema = new mongoose.Schema ({
 		type: String,
 		required: true,
 		unique: true
-	}
-	profileImage:
+	},
+	profileImage: {
 		type: String
+	}
 		
 });
 

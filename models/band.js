@@ -1,6 +1,4 @@
 var mongoose = require('mongoose');
-
-
 var BandSchema = mongoose.Schema ({
 
 	name: {
