@@ -20,14 +20,14 @@ describe('Bands', function() {
 	beforeEach(function(done) {
 		band.save(function(err, newBand) {
 			if (err) return console.log(err);
-			console.log("made newBand with id " + newBand.id);
-			band.id = newBand.id;
+			console.log("made newBand with id " + newBand._id);
+			band._id = newBand._id;
 			done();
 		})
 	})
 
 	afterEach(function(done) {
-		Band.findByIdAndRemove(band.id, function(err) {
+		Band.findByIdAndRemove(band._id, function(err) {
 			if (err) return console.log(err);
 			done(); 
 		})
@@ -37,7 +37,7 @@ describe('Bands', function() {
 
 	it('should list a SINGLE band on /<id> GET', function(done) {
 	    chai.request(app)
-	      .get('/' + band.id)
+	      .get('/' + band._id)
 	      .end(function(err, res){
 	        res.should.have.status(200);
 	        res.should.be.html;
@@ -68,38 +68,37 @@ describe('Bands', function() {
 
 	//========================CREATE=================================
 
-	// it('should add a SINGLE car on / POST' , function(done){
-	// var request = chai.request(app);
-	// request.post('/')
-	//   .set('content-type', 'application/x-www-form-urlencoded')
-	//   .send({
-	//     _id: 123,
-	//     color: "green",
-	//     make: "nissan",
-	//     model: "micra",
-	//     bhp: 90,
-	//     year: 2011,
-	//     miles: 40000
-	//   })
-	//   .end(function(err, res){
-	//     res.should.have.status(200);
-	//     res.should.be.html;
-	//     res.text.should.match(/All cars/);
-	//     request
-	//       .get('/123')
-	//       .end(function(err, res){
-	//         res.should.have.status(200);
-	//         res.should.be.html;
-	//         res.text.should.match(/green/);
-	//         res.text.should.match(/micra/);
+	it('should add a SINGLE band on / POST' , function(done){
+		var request = chai.request(app);
+		request.post('/')
+		  .set('content-type', 'application/x-www-form-urlencoded')
+		  .send({
+			name: 'Wham!',
+			yearsActive: ['1981-1986', '1988', '1991'],
+			genre: ['Dance-pop', 'Post-disco'],
+			members: 2,
+			rating: 5,
+			image: 'https://upload.wikimedia.org/wikipedia/en/7/7b/Whammake2.jpg'
+		  })
+		  .end(function(err, res){
+		    res.should.have.status(200);
+		    res.should.be.html;
+		    res.text.should.match(/All bands/);
+		    request
+		      .get('/' + band._id)
+		      .end(function(err, res){
+		        res.should.have.status(200);
+		        res.should.be.html;
+		        res.text.should.match(/Dance-pop/);
+		        res.text.should.match(/Post-disco/);
 
-	//         Car.findByIdAndRemove(123, function(err) {
-	//           if (err) return console.log(err);
-	//           done();
-	//         });
-	//       });
-	//   });
-	// });
+		        Car.findByIdAndRemove(band._id, function(err) {
+		          if (err) return console.log(err);
+		          done();
+		        });
+			});
+		});
+	});
 
 	//===============================================================
 

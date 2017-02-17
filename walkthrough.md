@@ -431,15 +431,7 @@ app.use(layouts);
 - Within views, make a file called `layout.ejs`. This will be the main template that is loaded by layouts for every page that is rendered. Inside add the following: 
 
 ```
-<!DOCTYPE html>
-<html>
-<head>
-  <title>autotrader</title>
-</head>
-<body>
-   <%- body %>
-</body>
-</html>
+in
 ```
 	
 - The body ejs tag is where the rest of the content will be displayed. This page acts exactly like standard html, but javascript can be inserted and run in the <% %> tags.
