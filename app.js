@@ -6,6 +6,10 @@ var mongoose = require('mongoose');
 var router = require('./config/routes');
 var layouts = require('express-ejs-layouts');
 var methodOverride = require('method-override');
+var cookieParser = require('cookie-parser');
+
+//cookie parser
+app.use(cookieParser())
 
 //body parser
 app.use(bodyParser.urlencoded({ extended: false }));
