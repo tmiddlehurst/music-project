@@ -27,8 +27,6 @@ function newBands(req, res) {
 		name: "",
 		yearsActive: [""],
 		genre: [""],
-		members: 0,
-		rating: 0,
 		image: ""
 	};
 	res.render("bands/new" , {

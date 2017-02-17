@@ -6,3 +6,10 @@
 <p><%= band.rating %></p>
 <p><%= band.members %></p>
 <p><%= band.image %></p>
+
+<a href="/<%= band.id %>/edit">edit</a>
+
+<form action="/<%= band.id %>" method="POST">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="submit" value="Delete">
+</form> 

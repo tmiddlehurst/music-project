@@ -1,25 +1,27 @@
-<form action="/<%= band.id %>" method="POST">
+<form action="/<%= band._id %>" method="POST">
     <label for="name">Band name</label>
-    <input type="text" name="name" placeholder="Enter a band name" >
+    <input type="text" name="name" placeholder="Enter a band name" value="<%= band.name %>">
 
     <label for="yearsActive">Years Active</label>
-    <textarea name="yearsActive" placeholder="Enter Years Active, for multiple periods seperate with a comma"></textarea>
+    <textarea name="yearsActive" placeholder="Enter Years Active, for multiple periods seperate with a comma" value="<%= band.yearsActive %>"></textarea>
 
     <label for="genre">Genre</label>
-    <input name="genre" placeholder="Genre"><%= band.body %></input>
+    <input name="genre" placeholder="Enter a genre" value="<%= band.genre %>">
 
     <label for="members">Members:</label>
-    <input type="number" name="members" min="0">
+    <input type="number" name="members" min="0" placeholder="Enter number of members" value="<%= band.members %>">
 
     <label for="rating">Rating:</label>
-    <input type="number" name="rating" min="0" max="5">
+    <input type="number" name="rating" min="0" max="5" placeholder="Enter a rating" value="<%= band.rating %>">
 
     <label for="image">Image Url:</label>
-    <input type="text" name="image">
+    <input type="text" name="image" value="<%= band.image %>">
 
 
     <input type="submit" value="Save band">
-    <% if(band.id != "") { %>
+
+    <% if(band.name != "") { %>
     <input type="hidden" name="_method" value="PUT">
     <% } %>
+
 </form>
