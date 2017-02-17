@@ -24,6 +24,14 @@ app.use(cookieParser());
 //flash messages
 app.use(flash());
 
+// middleware to make flash messages available in every template
+app.use(function(req, res, next){
+    // res.locals will be available in every template
+    res.locals.errors = req.flash('error');
+    console.log(res.locals.errors);
+    next();
+});
+
 //body parser
 app.use(bodyParser.urlencoded({ extended: false }));
 
