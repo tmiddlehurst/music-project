@@ -2,8 +2,17 @@ var express = require("express");
 var router = express.Router();
 var bandsController = require('../controllers/bands');
 var usersController = require('../controllers/users');
+var sessionsController = require('../controllers/sessions');
 
 module.exports = router;
+
+// sessions
+router.route('/sessions')
+      .post(sessionsController.create)
+      .delete(sessionsController.delete);
+
+router.route('/sessions/new')
+      .get(sessionsController.new);
 
 // users
 router.route('/users')

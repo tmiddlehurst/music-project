@@ -1,5 +1,14 @@
 <nav>
-  <a href="/">Bands</a>
-  <a href="/new">New Band</a>
-  <a href="/users/new">Register</a>
+  <% if(user) { %>
+    <a href="/">Bands Home</a>
+    <a href="/new">Add Band</a>
+    <form action="/sessions" method="POST">
+      <input type="hidden" name="_method" value="delete">
+      <input type="submit" value="Logout">
+    </form>
+    <p>Welcome, <%= user.first_name %></p>
+  <% } else { %>
+    <a href="/sessions/new">Login</a>
+    <a href="/users/register">Register</a>
+  <% } %>
 </nav>

@@ -2,7 +2,7 @@ var Band = require('../models/band.js');
 
 function indexBands(req, res) {
 	Band.find ({} , function(err, bands) {
-		if(err) return res.status(500).send(err);
+		if(err) req.flash('error' , err.message);
 		res.render("bands/index" , {
 			title: "Bands",
 			bands: bands
@@ -13,7 +13,7 @@ function indexBands(req, res) {
 function showBands(req, res) {
 	Band.findById(req.params.id , function(err, band) {
 		if(!band) return res.status(404).send("Not found");
-		if(err) return res.status(500).send(err);
+		if(err) req.flash('error' , err.message);
 		res.render("bands/show" , {
 			title: "Band",
 			band: band
@@ -49,7 +49,8 @@ function createBands(req, res) {
 function editBands(req, res) {
 	Band.findById(req.params.id , function (err, band) {
 		if(!band) return res.status(404).send("Not found");
-		if(err) return res.status(500).send(err);
+	    // check for errors and store a flash message if there was a problem
+	    if(err) req.flash('error' , err.message);
 		res.render("bands/edit" , {
 			title: "Band",
 			band: band
@@ -63,7 +64,7 @@ function updateBands(req, res) {
 		{ $set: req.body }, 
 		{ runValidators: true},
 		function (err , band) {
-			if (err) return res.status(500).send(err);
+			if(err) req.flash('error' , err.message);
 			res.redirect("/");
 		}
 	);
@@ -71,6 +72,7 @@ function updateBands(req, res) {
 
 function deleteBands(req, res) {
 	Band.findByIdAndRemove(req.params.id , function(err) {
+		if(err) req.flash('error' , err.message);
     	res.redirect("/");
   	});
 }
