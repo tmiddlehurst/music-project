@@ -37,11 +37,12 @@ function newBands(req, res) {
 }
 
 function createBands(req, res) {
-	console.log(req.body);
 	Band.create(req.body, function(err, band) {
-		if(err) return res.status(500).send(err);
-		res.redirect("/");
-		console.log(band.id);
+	    // check for errors and store a flash message if there was a problem
+	    if(err) req.flash('error' , err.message);
+	  
+	    // redirect the user to a GET route. We'll go back to the INDEX.
+	   res.redirect("/");
 	});
 }
 

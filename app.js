@@ -8,6 +8,8 @@ var layouts = require('express-ejs-layouts');
 var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var flash = require('connect-flash');
+
 
 //sessions
 app.use(session({
@@ -18,6 +20,9 @@ app.use(session({
 
 //cookie parser
 app.use(cookieParser());
+
+//flash messages
+app.use(flash());
 
 //body parser
 app.use(bodyParser.urlencoded({ extended: false }));
