@@ -89,7 +89,7 @@ mongoose.connect('mongodb://localhost/BandIt', function() {
 
 // check for login on all routes except sessions
 app.use(function(req, res, next) {
-  var urls = ["/sessions/new", "/users/new", "/sessions", "/users"];
+  var urls = ["/sessions/new", "/users/new", "/sessions"];
   if(urls.indexOf(req.url) === -1) {
     if (!req.user) return res.redirect('/sessions/new');
   }
