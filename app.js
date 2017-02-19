@@ -96,6 +96,7 @@ app.use(function(req, res, next) {
   next();
 });
 
+
 //Add the router last
 app.use(router);
 
