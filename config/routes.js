@@ -3,8 +3,17 @@ var router = express.Router();
 var bandsController = require('../controllers/bands');
 var usersController = require('../controllers/users');
 var sessionsController = require('../controllers/sessions');
+var bandsApiController = require('../controllers/api/bands');
 
-module.exports = router;
+// API section
+router.route('/api/bands')
+  .get(bandsApiController.index)
+  .post(bandsApiController.create);
+
+router.route('/api/bands/:id')
+  .get(bandsApiController.show)
+  .put(bandsApiController.update)
+  .delete(bandsApiController.delete);
 
 // sessions
 router.route('/sessions')
@@ -37,3 +46,5 @@ router.route('/:id')
 	.delete(bandsController.delete);
 
 router.get('/:id/edit', bandsController.edit);
+
+module.exports = router;
