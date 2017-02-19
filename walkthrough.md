@@ -44,7 +44,7 @@ And that's it. We now have a req.session object to work with. The extra options 
 * saveUnitiliazed - should new sessions be saved even if they're empty
 * secret - the key to use for encrypting our session data. Like a password
 
-If you refresh your page you'll see the log in the terminal but you'll also see that we have a new cookie in the browser called ``connect.sid``. This is how the browser tells the server which session belongs to it. 
+If you refresh your page you'll see the log in the terminal but you'll also see that we have a new cookie in the browser called ``connect.sid``. This is how the browser tells cthe server which session belongs to it. 
 
 You can store pretty much any json object ( minus the methods ) in the session. It doesn't just have to be simple numbers. So sessions are great for storing information about the logged in user.
 
