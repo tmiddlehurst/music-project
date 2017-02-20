@@ -6,7 +6,7 @@
       <input type="hidden" name="_method" value="delete">
       <input type="submit" value="Logout">
     </form>
-    <p>Welcome, <%= user.first_name %></p>
+    <p>Welcome, <%= user.username %></p>
   <% } else { %>
     <a href="/sessions/new">Login</a>
     <a href="/users/new">Register</a>
