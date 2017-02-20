@@ -35,19 +35,10 @@ h3 {
 	size: 30rem;
 }
 	
-a:link {
-	color: #DAD4EF;
+a {
+	color: white;
 }
-
-a:visited {
-	color: grey;
-}
-
-a:hover {
-	color: #818D92;
-}
-
-a:active {
+a: hover {
 	color: grey;
 }
 
