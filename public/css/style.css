@@ -1,5 +1,5 @@
 body {
-	background-image: url("http://cdn.pcwallart.com/images/gradient-black-background-wallpaper-4.jpg");
+	background-image: url("../background-image.png");
 	/*background-clip: 10px, 0px, 0px, 0px;*/
 	background-size: fill;
 
@@ -16,7 +16,7 @@ h1 {
 .card {
 	background-color:rgba(255,255,255, 0.2);
 	border: 2px solid rgba(255,255,255, 0.5);
-	border-radius: 15px;
+	border-radius: 5px;
 	width: 70rem;
 	margin: auto;
 	margin-top: 10rem;
@@ -26,6 +26,18 @@ h1 {
 .card-block {
 }
 
-.col-sm-6 {
+.bandPic {
+	border-radius: 5px;
+	border: 2px solid black;
 }
+
+h3 {
+	color: white;
+	font-size: 5rem;
+}
+
+.card-text {
+	
+}
+
 
