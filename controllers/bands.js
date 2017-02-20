@@ -10,7 +10,7 @@ function indexBands(req, res) {
 	});
 }
 									// TESTED
-function showBands(req, res) {
+function showBand(req, res) {
 	Band.findById(req.params.id , function(err, band) {
 		if(!band) return res.status(404).send("Not found");
 		if(err) req.flash('error' , err.message);
@@ -23,7 +23,7 @@ function showBands(req, res) {
 									// TESTED
 
 
-function newBands(req, res) {
+function newBand(req, res) {
 	var newBand = {
 		name: "",
 		yearsActive: [""],
@@ -37,7 +37,7 @@ function newBands(req, res) {
 	}); 
 }
 
-function createBands(req, res) {
+function createBand(req, res) {
 	Band.create(req.body, function(err, band) {
 	    // check for errors and store a flash message if there was a problem
 	    if(err) req.flash('error' , err.message);
@@ -47,7 +47,7 @@ function createBands(req, res) {
 	});
 }
 
-function editBands(req, res) {
+function editBand(req, res) {
 	Band.findById(req.params.id , function (err, band) {
 		if(!band) return res.status(404).send("Not found");
 	    // check for errors and store a flash message if there was a problem
@@ -59,7 +59,7 @@ function editBands(req, res) {
 	});
 }
 
-function updateBands(req, res) {
+function updateBand(req, res) {
 	Band.findByIdAndUpdate (
 		req.params.id,
 		{ $set: req.body }, 
@@ -71,7 +71,7 @@ function updateBands(req, res) {
 	);
 }
 
-function deleteBands(req, res) {
+function deleteBand(req, res) {
 	Band.findByIdAndRemove(req.params.id , function(err) {
 		if(err) req.flash('error' , err.message);
     	res.redirect("/");
@@ -82,10 +82,10 @@ function deleteBands(req, res) {
 
 module.exports = {
 	index: indexBands,
-	show: showBands,
-	new: newBands,
-	create: createBands,
-	edit: editBands,
-	update: updateBands,
-	delete: deleteBands
+	show: showBand,
+	new: newBand,
+	create: createBand,
+	edit: editBand,
+	update: updateBand,
+	delete: deleteBand
 }

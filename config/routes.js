@@ -7,14 +7,14 @@ var bandsApiController = require('../controllers/api/bands');
 
 // API section
 router.route('/api/bands')
-  .get(bandsApiController.index)
-  .post(bandsApiController.create);
+      .get(bandsApiController.index)
+      .post(bandsApiController.create);
 
 router.route('/api/bands/:id')
-  .get(bandsApiController.show)
-  .put(bandsApiController.update)
-  .delete(bandsApiController.delete)
-  .patch(bandsApiController.favourite);  
+      .get(bandsApiController.show)
+      .put(bandsApiController.update)
+      .delete(bandsApiController.delete)
+      .patch(bandsApiController.favourite);  
 
 // sessions
 router.route('/sessions')
@@ -25,14 +25,15 @@ router.route('/sessions/new')
       .get(sessionsController.new);
 
 // users
+router.route('/api/bands/:id')
+      .get(usersController.show)
+
 router.route('/users')
       .post(usersController.create);
 
 router.route('/users/new')
       .get(usersController.new);
-
-// router.route('/users/:id')
-//       .get(usersController.show);      
+  
 
 //bands
 router.route('/')

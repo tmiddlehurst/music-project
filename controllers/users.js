@@ -1,16 +1,16 @@
 var User = require ('../models/user.js')
 
-// // SHOW USER
-// function showUser(req, res) {
-// 	Band.findById(req.params.id , function(err, user) {
-// 		if(!user) return res.status(404).send("Not found");
-// 		if(err) return res.status(500).send(err);
-// 		res.render("users/show" , {
-// 			title: "User",
-// 			user: user
-// 		});
-// 	}); 
-// }
+// SHOW USER
+function showUser(req, res) {
+	User.findById(req.params.id , function(err, user) {
+		if(!user) return res.status(404).send("Not found");
+		if(err) return res.status(500).send(err);
+		res.render("users/show" , {
+			title: "User",
+			user: user
+		});
+	}); 
+}
 
 // NEW - GET
 function newUser(req, res) {
@@ -38,5 +38,6 @@ function createUser(req, res) {
 
 module.exports = {
 	new: newUser,
-	create: createUser
+	create: createUser,
+	show: showUser
 }
