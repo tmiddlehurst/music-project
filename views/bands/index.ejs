@@ -1,16 +1,16 @@
 <h1>All bands</h1>
 
-<% for(var i = 0; i < bands.length; i++ ) { %>
+<% for(var i = 1; i < bands.length; i++ ) { %>
 
-	<div class = "card" style = "width: 30vw;">
+	<div class = "card" style = "width: 640px;">
 
 		<div class = "card-block">
 
 			<h3 class = "card-title"><a href="/<%= bands[i].id %>"><%= bands[i].name %></a></h3>
-			
+
 			<img src="<%= bands[i].image %>" style="width: 640px;">
-			<p class = "card-text"><%= bands[i].genre %></p>
-			<p class = "card-text"><%= bands[i].rating %></p>
+			<p class = "card-text">Genre: <%= bands[i].genre %></p>
+			<p class = "card-text">Rating: <%= bands[i].rating %></p>
 
 		</div>	
 	</div>
