@@ -45,5 +45,23 @@ a: hover {
 .card-text {
 
 }
+ p {
+ 	display: inline-block;
+ 	
+ 	margin: 1rem;
+ 	padding: 0.5rem;
 
+ 	background-color: #dee;
+ 	color: black;
+ 	font-size: 3rem;
+ }
 
+.userShowH1 {
+	padding-left: 2rem;
+	text-align: left;
+
+}
+
+h2 {
+
+}

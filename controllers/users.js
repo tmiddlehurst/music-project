@@ -2,7 +2,7 @@ var User = require ('../models/user.js')
 
 // SHOW USER
 function showUser(req, res) {
-	User.findById(req.params.id , function(err, user) {
+	User.findById(req.params.id).populate('bands').exec(function(err, user) {
 		if(!user) return res.status(404).send("Not found");
 		if(err) return res.status(500).send(err);
 		res.render("users/show" , {
