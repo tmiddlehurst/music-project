@@ -13,7 +13,8 @@ router.route('/api/bands')
 router.route('/api/bands/:id')
   .get(bandsApiController.show)
   .put(bandsApiController.update)
-  .delete(bandsApiController.delete);
+  .delete(bandsApiController.delete)
+  .patch(bandsApiController.like);  
 
 // sessions
 router.route('/sessions')

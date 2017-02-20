@@ -7,15 +7,15 @@ var BandSchema = mongoose.Schema ({
 		unique: true
 	},
 
-	yearsActive: {
-		type:[String],
+	yearsActive: [{
+		type: String,
 		required: true,
-	},
+	}],
 
-	genre: {
-		type:[String],
+	genre: [{
+		type: String,
 		required: true,
-	},
+	}],
 	members: {
 		type: Number,
 		required: true,
@@ -27,7 +27,11 @@ var BandSchema = mongoose.Schema ({
 		required:true
 	},
 
-	image: String
+	image: String,
+
+	likes: {
+		type: Number
+	}
 
 });
 

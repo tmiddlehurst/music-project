@@ -30,7 +30,6 @@ function newUser(req, res) {
 
 //CREATE - POST
 function createUser(req, res) {
-
 	User.create(req.body, function(err, user) {
 		if(err) return res.status(500).send(err);
 		res.redirect("/");

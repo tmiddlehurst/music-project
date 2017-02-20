@@ -18,7 +18,8 @@ var UserSchema = new mongoose.Schema ({
 	},
 	profileImage: {
 		type: String
-	}
+	},
+	bands: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Band' }]
 		
 });
 
