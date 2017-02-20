@@ -1,19 +1,17 @@
 var Band = require('../../models/band');
-
+var User = require('../../models/user');
 
 // likeBand
 
-function likeBand (req, res) {
-  Band.findByIdAndUpdate(
-    req.params.id,
-      {$inc: {likes:1}},
-      { runValidators: true },
-      function(err , band){
-        if(err) return res.status(500).json({error: err.message});
-        // redirect the user to a GET route. We'll go back to the INDEX.
-        res.status(204).json(band);
-      }
-    );
+function favouriteBand(req, res) {
+  Band.findById(req.body.id, function(err, band) {
+    if (err) res.status(500).json({error: err.message});
+
+    User.findByIdAndUpdate(req.user._id, { $addToSet: { bands: band.id}}, { new: true}, function(err, user) {
+      if (err) res.status(500).json({error: err.message});
+      return res.status(200).json({message: "Successfully favourited"})
+    })
+  })
 }
 
 // INDEX - GET /
@@ -94,6 +92,6 @@ module.exports = {
   delete: deleteBand,
   update: updateBand,
   create: createBand,
-  like: likeBand
+  favourite: favouriteBand
 
 }

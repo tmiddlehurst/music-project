@@ -32,12 +32,27 @@ h1 {
 }
 
 h3 {
-	color: white;
-	font-size: 5rem;
+	size: 30rem;
+}
+	
+a:link {
+	color: #DAD4EF;
+}
+
+a:visited {
+	color: grey;
+}
+
+a:hover {
+	color: #818D92;
+}
+
+a:active {
+	color: grey;
 }
 
 .card-text {
-	
+
 }
 
 
