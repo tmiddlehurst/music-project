@@ -11,6 +11,8 @@ var session = require('express-session');
 var User = require('./models/user');
 var flash = require('connect-flash');
 
+app.use(express.static('public'));
+
 //cookie parser
 app.use(cookieParser());
 
@@ -78,6 +80,7 @@ app.use(methodOverride(function(req, res){
 
 //Tell Express to use ejs for rendering templates
 app.set('view engine', 'ejs');
+
 
 // Use express layouts middleware too
 app.use(layouts);
