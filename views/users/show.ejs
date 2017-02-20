@@ -2,6 +2,22 @@
 
 <img src="<%=user.image%>">
 
+<div class = "container"></div>
+	<% for(var i = 1; i < users.bands.length; i++ ) { %>
+		<div class = "col-sm-12">		
+			<div class = "card">
 
+				<div class = "card-block">
 
-</form> 
+					<h3 class = "card-title"><a href="/<%= users.bands[i].id %>"><%= users.bands[i].name %></a></h3>
+
+					<img class="bandPic" src="<%= bands[i].image %>" style="width: 60rem;">
+					<p class = "card-text">Genre(s): <%= bands[i].genre %></p>
+					<p class = "card-text">Rating: <%= bands[i].rating %></p>
+					<button class="favButton" data-id="<%= bands[i]._id %>">Favourite</button>
+
+				</div>	
+			</div>
+		</div>
+	<% } %>
+</div>
