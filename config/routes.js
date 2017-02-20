@@ -25,14 +25,15 @@ router.route('/sessions/new')
       .get(sessionsController.new);
 
 // users
-router.route('/api/bands/:id')
-      .get(usersController.show)
 
 router.route('/users')
       .post(usersController.create);
 
 router.route('/users/new')
       .get(usersController.new);
+
+router.route('/users/:id')
+      .get(usersController.show);
   
 
 //bands
